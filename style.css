@@ -1,0 +1,20 @@
+html {
+    background-color: antiquewhite;
+}
+
+table {
+    border-width: 1px solid black;
+    border-collapse: collapse;
+    border-style: double;
+}
+
+tr, td {
+    border-style: dashed;
+    padding: 10px;
+}
+
+button {
+    background-color: cadetblue;
+    border-radius: 24px;
+    padding: 5px;
+}
