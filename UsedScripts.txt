@@ -1,0 +1,4 @@
+composer install
+composer create-project laravel/laravel laravel_demo
+php artisan serve
+cd laravel_demo
