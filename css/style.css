@@ -1,0 +1,400 @@
+/* Basic Resets & Global Styles */
+:root {
+    --primary-bg: #1a1a2e; /* Dark blue/purple */
+    --secondary-bg: #22223b; /* Slightly lighter dark blue */
+    --accent-color: #e94560; /* Vibrant red/pink */
+    --text-color-light: #e0e0e0; /* Off-white for general text */
+    --text-color-dark: #333333; /* Dark text for contrast areas */
+    --card-bg: #2a2a4a; /* Darker card background */
+    --border-color: #4a4a6e; /* Subtle border color */
+    --focus-glow: 0 0 10px rgba(233, 69, 96, 0.7); /* Glow effect for focus */
+    --transition-speed: 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--primary-bg);
+    color: var(--text-color-light);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.ContainerClass {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 100%;
+}
+
+/* Header */
+.HeaderClass {
+    background-color: var(--secondary-bg);
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.HeaderContentClass {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+}
+
+.LogoClass {
+    color: var(--accent-color);
+    font-size: 1.8em;
+    font-weight: bold;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: color var(--transition-speed);
+}
+
+.LogoClass:hover {
+    color: var(--text-color-light);
+}
+
+.NavigationClass ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+}
+
+.NavigationClass ul li {
+    margin-left: 25px;
+}
+
+.NavigationClass ul li a {
+    color: var(--text-color-light);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color var(--transition-speed), text-shadow var(--transition-speed);
+    padding: 5px 0;
+    position: relative;
+}
+
+.NavigationClass ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--accent-color);
+    transition: width var(--transition-speed);
+}
+
+.NavigationClass ul li a:hover::after {
+    width: 100%;
+}
+
+.NavigationClass ul li a:hover {
+    color: var(--accent-color);
+    text-shadow: 0 0 5px rgba(233, 69, 96, 0.5);
+}
+
+/* Main Content Area */
+.MainContentClass {
+    flex-grow: 1;
+    padding: 40px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.CardClass {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+    border: 1px solid var(--border-color);
+    width: 100%;
+    max-width: 600px; /* Max width for forms/cards */
+}
+
+.CardClass h2 {
+    color: var(--accent-color);
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 2em;
+    letter-spacing: 0.5px;
+}
+
+/* Forms */
+.FormGroupClass {
+    margin-bottom: 20px;
+}
+
+.FormGroupClass label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color-light);
+    font-weight: 500;
+}
+
+.FormGroupClass input[type="text"],
+.FormGroupClass input[type="password"],
+.FormGroupClass input[type="email"],
+.FormGroupClass input[type="file"],
+.FormGroupClass select,
+.FormGroupClass textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background-color: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color-light);
+    font-size: 1em;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    -webkit-appearance: none; /* Remove default styling for select/input */
+}
+
+.FormGroupClass input[type="file"] {
+    padding: 12px 0; /* Adjust padding for file input */
+}
+
+.FormGroupClass input[type="text"]:focus,
+.FormGroupClass input[type="password"]:focus,
+.FormGroupClass input[type="email"]:focus,
+.FormGroupClass input[type="file"]:focus,
+.FormGroupClass select:focus,
+.FormGroupClass textarea:focus {
+    border-color: var(--accent-color);
+    box-shadow: var(--focus-glow);
+    outline: none;
+}
+
+.FormGroupClass select {
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e0e0e0'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 1em;
+    padding-right: 40px; /* Make space for the custom arrow */
+}
+
+
+.ButtonClass {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    display: block;
+    width: 100%;
+    margin-top: 25px;
+    letter-spacing: 0.5px;
+}
+
+.ButtonClass:hover {
+    background-color: #c9354f; /* Darker accent */
+    transform: translateY(-2px);
+    box-shadow: var(--focus-glow);
+}
+
+.ButtonClass:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.LinkClass {
+    color: var(--accent-color);
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    transition: color var(--transition-speed);
+}
+
+.LinkClass:hover {
+    color: var(--text-color-light);
+}
+
+/* Messages (Success/Error) */
+.MessageClass {
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.SuccessMessageClass {
+    background-color: rgba(60, 179, 113, 0.2); /* MediumSeaGreen with transparency */
+    color: #3cb371;
+    border: 1px solid #3cb371;
+}
+
+.ErrorMessageClass {
+    background-color: rgba(220, 20, 60, 0.2); /* Crimson with transparency */
+    color: #dc143c;
+    border: 1px solid #dc143c;
+}
+
+/* Table Styles (for admin_panel, all_music, my_music, playlists) */
+.TableContainerClass {
+    width: 100%;
+    overflow-x: auto; /* For responsive tables on small screens */
+    margin-top: 30px;
+}
+
+.TableClass {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: var(--card-bg);
+    border-radius: 8px;
+    overflow: hidden; /* Ensures border-radius applies to table */
+    border: 1px solid var(--border-color);
+}
+
+.TableClass th,
+.TableClass td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color-light);
+}
+
+.TableClass th {
+    background-color: var(--secondary-bg);
+    font-weight: bold;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+}
+
+.TableClass tr:last-child td {
+    border-bottom: none;
+}
+
+.TableClass tbody tr:hover {
+    background-color: rgba(233, 69, 96, 0.1); /* Light highlight on hover */
+}
+
+/* Audio Player */
+.AudioPlayerClass {
+    width: 100%;
+    margin-top: 15px;
+    background-color: var(--primary-bg);
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+}
+
+/* Song Actions (Delete, Add to Playlist, etc.) */
+.ActionLinksClass a,
+.ActionLinksClass button {
+    color: var(--accent-color);
+    text-decoration: none;
+    margin-right: 15px;
+    transition: color var(--transition-speed);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em; /* Ensure button text matches link text size */
+    font-family: inherit; /* Inherit font from body */
+    padding: 0; /* Remove default button padding */
+}
+
+.ActionLinksClass a:hover,
+.ActionLinksClass button:hover {
+    color: var(--text-color-light);
+    text-decoration: underline;
+}
+
+/* Admin Panel Specifics */
+.AdminSectionClass {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+.AdminSectionClass h3 {
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    font-size: 1.6em;
+}
+
+/* Footer */
+.FooterClass {
+    background-color: var(--secondary-bg);
+    color: var(--text-color-light);
+    text-align: center;
+    padding: 20px 0;
+    margin-top: auto; /* Pushes footer to the bottom */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .HeaderContentClass {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .LogoClass {
+        margin-bottom: 15px;
+    }
+
+    .NavigationClass ul {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .NavigationClass ul li {
+        margin: 10px 0;
+    }
+
+    .MainContentClass {
+        padding: 30px 0;
+    }
+
+    .CardClass {
+        padding: 20px;
+        margin: 0 15px 30px; /* Add horizontal margin on smaller screens */
+    }
+
+    .TableClass th,
+    .TableClass td {
+        padding: 10px;
+        font-size: 0.9em;
+    }
+
+    .TableContainerClass {
+        margin: 0 15px; /* Adjust table container margin */
+    }
+}
+
+@media (max-width: 480px) {
+    .LogoClass {
+        font-size: 1.5em;
+    }
+
+    .NavigationClass ul li a {
+        font-size: 0.9em;
+    }
+
+    .CardClass h2 {
+        font-size: 1.5em;
+    }
+
+    .ButtonClass {
+        padding: 12px 20px;
+        font-size: 1em;
+    }
+}

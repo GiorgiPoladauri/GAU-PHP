@@ -1,0 +1,16 @@
+SocialMusic/
+├── css/
+│   └── style.css
+├── uploads/
+│   └── (Uploaded music files will be stored here, e.g., song_title.mp3, track_name.wav)
+├── admin_panel.php
+├── all_music.php
+├── config.php
+├── index.php
+├── login.php
+├── logout.php
+├── my_music.php
+├── playlists.php
+├── register.php
+├── upload.php
+└── socialmusic_db.sql  (This is the database schema file for phpMyAdmin)
