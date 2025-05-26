@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Redirect if not logged in
 if (!isset($_SESSION['UserLoggedIn'])) {
     header('Location: login.php');
     exit();
@@ -11,13 +10,12 @@ if (!isset($_SESSION['UserLoggedIn'])) {
 $MessageStatus = '';
 $MessageType = '';
 
-// Fetch genres for the dropdown
 $GenresArray = [];
 try {
     $StatementGenres = $DatabaseConnection->query("SELECT id, name FROM genres ORDER BY name ASC");
     $GenresArray = $StatementGenres->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ExceptionObject) {
-    // Handle error, though not critical for page display
+
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -27,9 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $GenreIdInput = $_POST['GenreIdInput'];
     $UserId = $_SESSION['UserId'];
 
-    // File upload handling
     $TargetDirectory = "uploads/";
-    // Generate a unique file name to prevent conflicts and for better security
     $OriginalFileName = basename($_FILES["MusicFileInput"]["name"]);
     $FileType = strtolower(pathinfo($OriginalFileName, PATHINFO_EXTENSION));
     $UniqueFileName = uniqid('music_', true) . '.' . $FileType;
@@ -37,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $UploadOk = 1;
 
-    // Check if music file is an actual audio file
     $AllowedFileTypes = ["mp3", "wav", "aac", "ogg", "flac"];
     if (!in_array($FileType, $AllowedFileTypes)) {
         $MessageStatus = "Sorry, only MP3, WAV, AAC, OGG, & FLAC files are allowed.";
@@ -45,18 +40,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $UploadOk = 0;
     }
 
-    // Check file size (e.g., max 50MB)
-    if ($_FILES["MusicFileInput"]["size"] > 50000000) { // 50MB
+    if ($_FILES["MusicFileInput"]["size"] > 50000000) { 
         $MessageStatus = "Sorry, your file is too large (max 50MB).";
         $MessageType = 'ErrorMessageClass';
         $UploadOk = 0;
     }
 
-    // Check if $UploadOk is set to 0 by an error
     if ($UploadOk == 0) {
-        // Message already set
     } else {
-        // Try to upload file
         if (move_uploaded_file($_FILES["MusicFileInput"]["tmp_name"], $TargetFile)) {
             try {
                 $StatementUpload = $DatabaseConnection->prepare("INSERT INTO songs (user_id, title, artist, album, genre_id, file_path) VALUES (?, ?, ?, ?, ?, ?)");
@@ -66,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } catch (PDOException $ExceptionObject) {
                 $MessageStatus = 'Error saving to database: ' . $ExceptionObject->getMessage();
                 $MessageType = 'ErrorMessageClass';
-                // Delete the uploaded file if database insertion fails
                 if (file_exists($TargetFile)) {
                     unlink($TargetFile);
                 }

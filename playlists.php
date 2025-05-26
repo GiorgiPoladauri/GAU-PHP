@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Redirect if not logged in
 if (!isset($_SESSION['UserLoggedIn'])) {
     header('Location: login.php');
     exit();
@@ -16,15 +15,13 @@ $SongsAvailable = [];
 $SelectedPlaylistSongs = [];
 $SelectedPlaylistId = null;
 
-// Fetch all songs for adding to playlists
 try {
     $StatementAllSongs = $DatabaseConnection->query("SELECT id, title, artist FROM songs ORDER BY title ASC");
     $SongsAvailable = $StatementAllSongs->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $ExceptionObject) {
-    // Handle error
+
 }
 
-// Handle playlist creation
 if (isset($_POST['CreatePlaylist'])) {
     $PlaylistNameInput = trim($_POST['PlaylistNameInput']);
     if (empty($PlaylistNameInput)) {
@@ -43,7 +40,6 @@ if (isset($_POST['CreatePlaylist'])) {
     }
 }
 
-// Handle playlist deletion
 if (isset($_GET['action']) && $_GET['action'] === 'delete_playlist' && isset($_GET['id'])) {
     $PlaylistIdToDelete = $_GET['id'];
     try {
@@ -62,7 +58,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_playlist' && isset($_G
     }
 }
 
-// Handle adding song to playlist
 if (isset($_POST['AddSongToPlaylist'])) {
     $PlaylistIdToAdd = $_POST['PlaylistIdToAdd'];
     $SongIdToAdd = $_POST['SongIdToAdd'];
@@ -72,7 +67,6 @@ if (isset($_POST['AddSongToPlaylist'])) {
         $MessageType = 'ErrorMessageClass';
     } else {
         try {
-            // Check if song is already in playlist
             $StatementCheck = $DatabaseConnection->prepare("SELECT COUNT(*) FROM playlist_songs WHERE playlist_id = ? AND song_id = ?");
             $StatementCheck->execute([$PlaylistIdToAdd, $SongIdToAdd]);
             if ($StatementCheck->fetchColumn() > 0) {
@@ -91,12 +85,10 @@ if (isset($_POST['AddSongToPlaylist'])) {
     }
 }
 
-// Handle removing song from playlist
 if (isset($_GET['action']) && $_GET['action'] === 'remove_song' && isset($_GET['playlist_id']) && isset($_GET['song_id'])) {
     $PlaylistIdToRemove = $_GET['playlist_id'];
     $SongIdToRemove = $_GET['song_id'];
     try {
-        // Verify user owns the playlist
         $StatementVerifyPlaylist = $DatabaseConnection->prepare("SELECT user_id FROM playlists WHERE id = ?");
         $StatementVerifyPlaylist->execute([$PlaylistIdToRemove]);
         $PlaylistOwner = $StatementVerifyPlaylist->fetchColumn();
@@ -122,7 +114,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'remove_song' && isset($_GET['
 }
 
 
-// Fetch user's playlists
 try {
     $StatementPlaylists = $DatabaseConnection->prepare("SELECT id, name FROM playlists WHERE user_id = ? ORDER BY name ASC");
     $StatementPlaylists->execute([$UserId]);
@@ -132,7 +123,6 @@ try {
     $MessageType = 'ErrorMessageClass';
 }
 
-// Fetch songs for a selected playlist
 if (isset($_GET['view_playlist']) && !empty($_GET['view_playlist'])) {
     $SelectedPlaylistId = $_GET['view_playlist'];
     try {

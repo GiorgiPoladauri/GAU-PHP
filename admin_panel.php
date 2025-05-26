@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Redirect if not logged in or not an admin
 if (!isset($_SESSION['UserLoggedIn']) || !$_SESSION['IsAdmin']) {
     header('Location: index.php');
     exit();
@@ -14,10 +13,8 @@ $UsersArray = [];
 $SongsArray = [];
 $GenresArray = [];
 
-// Handle User Actions (Delete User)
 if (isset($_GET['action']) && $_GET['action'] === 'delete_user' && isset($_GET['id'])) {
     $UserIdToDelete = $_GET['id'];
-    // Prevent admin from deleting themselves
     if ($UserIdToDelete == $_SESSION['UserId']) {
         $MessageStatus = 'You cannot delete your own admin account.';
         $MessageType = 'ErrorMessageClass';
@@ -39,11 +36,9 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_user' && isset($_GET['
     }
 }
 
-// Handle Song Actions (Delete Song)
 if (isset($_GET['action']) && $_GET['action'] === 'delete_song' && isset($_GET['id'])) {
     $SongIdToDelete = $_GET['id'];
     try {
-        // Get file path before deleting from DB
         $StatementFilePath = $DatabaseConnection->prepare("SELECT file_path FROM songs WHERE id = ?");
         $StatementFilePath->execute([$SongIdToDelete]);
         $SongToDelete = $StatementFilePath->fetch(PDO::FETCH_ASSOC);
@@ -52,7 +47,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_song' && isset($_GET['
         $StatementDeleteSong->execute([$SongIdToDelete]);
         if ($StatementDeleteSong->rowCount() > 0) {
             if ($SongToDelete && file_exists($SongToDelete['file_path'])) {
-                unlink($SongToDelete['file_path']); // Delete the actual file
+                unlink($SongToDelete['file_path']); 
             }
             $MessageStatus = 'Song deleted successfully!';
             $MessageType = 'SuccessMessageClass';
@@ -66,7 +61,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_song' && isset($_GET['
     }
 }
 
-// Handle Genre Actions (Add Genre)
 if (isset($_POST['AddGenre'])) {
     $NewGenreName = trim($_POST['NewGenreName']);
     if (empty($NewGenreName)) {
@@ -85,7 +79,6 @@ if (isset($_POST['AddGenre'])) {
     }
 }
 
-// Handle Genre Actions (Delete Genre)
 if (isset($_GET['action']) && $_GET['action'] === 'delete_genre' && isset($_GET['id'])) {
     $GenreIdToDelete = $_GET['id'];
     try {
@@ -104,7 +97,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete_genre' && isset($_GET[
     }
 }
 
-// Fetch all users
 try {
     $StatementUsers = $DatabaseConnection->query("SELECT id, username, email, registration_date, is_admin FROM users ORDER BY registration_date DESC");
     $UsersArray = $StatementUsers->fetchAll(PDO::FETCH_ASSOC);
@@ -113,7 +105,6 @@ try {
     $MessageType = 'ErrorMessageClass';
 }
 
-// Fetch all songs with uploader username and genre name
 try {
     $StatementSongs = $DatabaseConnection->query("SELECT s.id, s.title, s.artist, s.album, g.name AS genre_name, u.username AS uploader_username, s.upload_date, s.play_count FROM songs s LEFT JOIN genres g ON s.genre_id = g.id LEFT JOIN users u ON s.user_id = u.id ORDER BY s.upload_date DESC");
     $SongsArray = $StatementSongs->fetchAll(PDO::FETCH_ASSOC);
@@ -122,7 +113,6 @@ try {
     $MessageType = 'ErrorMessageClass';
 }
 
-// Fetch all genres
 try {
     $StatementGenres = $DatabaseConnection->query("SELECT id, name FROM genres ORDER BY name ASC");
     $GenresArray = $StatementGenres->fetchAll(PDO::FETCH_ASSOC);
@@ -196,7 +186,7 @@ try {
                                             <td><?php echo htmlspecialchars(date('Y-m-d H:i', strtotime($User['registration_date']))); ?></td>
                                             <td><?php echo $User['is_admin'] ? 'Yes' : 'No'; ?></td>
                                             <td>
-                                                <?php if ($User['id'] != $_SESSION['UserId']): // Prevent admin from deleting self ?>
+                                                <?php if ($User['id'] != $_SESSION['UserId']):  ?>
                                                     <a href="admin_panel.php?action=delete_user&id=<?php echo htmlspecialchars($User['id']); ?>" onclick="return confirm('Are you sure you want to delete this user and all their associated data (songs, playlists)?');" style="color: #ff4d4d;">Delete</a>
                                                 <?php else: ?>
                                                     (Current Admin)

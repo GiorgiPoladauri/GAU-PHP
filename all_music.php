@@ -6,19 +6,15 @@ $AllSongs = [];
 $MessageStatus = '';
 $MessageType = '';
 
-// Handle play count increment
 if (isset($_GET['action']) && $_GET['action'] === 'play' && isset($_GET['id'])) {
     $SongIdToPlay = $_GET['id'];
     try {
         $StatementUpdatePlayCount = $DatabaseConnection->prepare("UPDATE songs SET play_count = play_count + 1 WHERE id = ?");
         $StatementUpdatePlayCount->execute([$SongIdToPlay]);
-        // No need to redirect, just let the page reload with updated count
     } catch (PDOException $ExceptionObject) {
-        // Log error, but don't stop page load
     }
 }
 
-// Fetch all songs
 try {
     $StatementAllSongs = $DatabaseConnection->query("SELECT s.id, s.title, s.artist, s.album, g.name AS genre_name, u.username AS uploader_username, s.file_path, s.upload_date, s.play_count FROM songs s LEFT JOIN genres g ON s.genre_id = g.id LEFT JOIN users u ON s.user_id = u.id ORDER BY s.upload_date DESC");
     $AllSongs = $StatementAllSongs->fetchAll(PDO::FETCH_ASSOC);

@@ -27,7 +27,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $PasswordHash = password_hash($PasswordInput, PASSWORD_DEFAULT);
 
         try {
-            // Check if username or email already exists
             $StatementCheck = $DatabaseConnection->prepare("SELECT id FROM users WHERE username = ? OR email = ?");
             $StatementCheck->execute([$UsernameInput, $EmailInput]);
             if ($StatementCheck->rowCount() > 0) {

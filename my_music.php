@@ -2,7 +2,6 @@
 session_start();
 require_once 'config.php';
 
-// Redirect if not logged in
 if (!isset($_SESSION['UserLoggedIn'])) {
     header('Location: login.php');
     exit();
@@ -13,11 +12,9 @@ $UserSongs = [];
 $MessageStatus = '';
 $MessageType = '';
 
-// Handle song deletion
 if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])) {
     $SongIdToDelete = $_GET['id'];
     try {
-        // First, get the file path to delete the actual file
         $StatementFilePath = $DatabaseConnection->prepare("SELECT file_path FROM songs WHERE id = ? AND user_id = ?");
         $StatementFilePath->execute([$SongIdToDelete, $UserId]);
         $SongToDelete = $StatementFilePath->fetch(PDO::FETCH_ASSOC);
@@ -27,7 +24,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
             $StatementDelete->execute([$SongIdToDelete, $UserId]);
 
             if ($StatementDelete->rowCount() > 0) {
-                // Delete the actual file from the server
                 if (file_exists($SongToDelete['file_path'])) {
                     unlink($SongToDelete['file_path']);
                 }
@@ -47,7 +43,6 @@ if (isset($_GET['action']) && $_GET['action'] === 'delete' && isset($_GET['id'])
     }
 }
 
-// Fetch user's songs
 try {
     $StatementSongs = $DatabaseConnection->prepare("SELECT s.id, s.title, s.artist, s.album, g.name AS genre_name, s.file_path, s.upload_date, s.play_count FROM songs s LEFT JOIN genres g ON s.genre_id = g.id WHERE s.user_id = ? ORDER BY s.upload_date DESC");
     $StatementSongs->execute([$UserId]);
